@@ -1,18 +1,12 @@
-from functools import wraps
-
 import jwt
 from sanic import Sanic
 from sanic.response import json
 
 app = Sanic()
-
 SECRET = 'thesecret'
-
-empty_token = {'authenticated', False}
 
 
 class Token:
-
     def __init__(self, token=None, data=None, algorithm='HS256'):
         # will take token over data
         if token:
@@ -34,6 +28,7 @@ class Token:
 
 @app.middleware('request')
 async def load_jwt(request):
+    # guarantees the token arg is populated
     request.args['Token'] = Token(token=request.token)
 
 @app.middleware('response')
